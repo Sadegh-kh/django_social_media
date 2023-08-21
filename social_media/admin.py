@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import User
 from django.contrib.auth.admin import UserAdmin
+
+from .models import User
 
 # Register your models here.
 
@@ -8,6 +9,7 @@ from django.contrib.auth.admin import UserAdmin
 @admin.register(User)
 class UserAdmin(UserAdmin):
     list_display = ["username", "phone", "first_name", "last_name", "email", "is_staff"]
+
     fieldsets = UserAdmin.fieldsets + (
         (
             "Additional Information",
@@ -15,7 +17,8 @@ class UserAdmin(UserAdmin):
                 "fields": ("photo", "job", "age", "birth_date", "bio"),
             },
         ),
-    )
+    )  # type: ignore
+
     add_fieldsets = UserAdmin.add_fieldsets + (
         (
             "Additional Information",
