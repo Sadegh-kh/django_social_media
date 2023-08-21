@@ -9,12 +9,13 @@ from .models import User
 @admin.register(User)
 class UserAdmin(UserAdmin):
     list_display = ["username", "phone", "first_name", "last_name", "email", "is_staff"]
+    ordering = ["-is_staff", "username"]
 
     fieldsets = UserAdmin.fieldsets + (
         (
             "Additional Information",
             {
-                "fields": ("photo", "job", "age", "birth_date", "bio"),
+                "fields": ("photo", "job", "phone", "age", "birth_date", "bio"),
             },
         ),
     )  # type: ignore
@@ -23,7 +24,7 @@ class UserAdmin(UserAdmin):
         (
             "Additional Information",
             {
-                "fields": ("photo", "job", "age", "birth_date", "bio"),
+                "fields": ("photo", "job", "phone", "age", "birth_date", "bio"),
             },
         ),
     )
