@@ -1,0 +1,11 @@
+{% extends 'parent/base.html' %}
+
+{% block title %}
+Profile
+{% endblock title %}
+
+{% block content %}
+<h2>Profile</h2>
+<p><a href="{% url 'accounts:edit_user' %}">Edit personal information</a></p>
+{% endblock content %}
+

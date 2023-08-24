@@ -25,3 +25,30 @@ class SignUpForm(UserCreationForm):
 
 class LoginForm(AuthenticationForm):
     username = UsernameField(label="Username or Phone")
+
+
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "phone",
+            "job",
+            "age",
+            "bio",
+            "birth_date",
+            "photo",
+        ]
+
+    def clean_phone(self):
+        phone = self.cleaned_data["phone"]
+        if (
+            get_user_model()
+            .objects.exclude(id=self.instance.id)
+            .filter(phone=phone)
+            .exists()
+        ):
+            raise forms.ValidationError("This phone number exist!")
+        return phone
