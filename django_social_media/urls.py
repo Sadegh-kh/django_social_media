@@ -17,12 +17,12 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import TemplateView
 
 from django_social_media import settings
+from social_media import views as social_views
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    path("", social_views.home_page, name="home"),
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls", namespace="accounts")),
     path("accounts/", include("django.contrib.auth.urls")),
