@@ -1,9 +1,9 @@
-from django.contrib.auth import get_user_model
 from django.shortcuts import redirect, render
-from django.urls import is_valid_path, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from . import forms
+from .models import User
 
 # Create your views here.
 
@@ -20,7 +20,7 @@ def profile_view(request):
 
 
 def edit_user_view(request):
-    user = get_user_model().objects.get(username=request.user.username)
+    user = User.objects.get(username=request.user.username)
     if request.method == "POST":
         form = forms.EditUserForm(data=request.POST, files=request.FILES, instance=user)
         if form.is_valid():
