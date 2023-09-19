@@ -1,0 +1,17 @@
+{% extends "parent/base.html" %}
+
+{% block title %}
+Ticket
+{% endblock title %}
+
+{% block content %}
+<br>
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="send ticket">
+
+</form>
+{% endblock content %}
+
+
