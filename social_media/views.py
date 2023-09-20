@@ -2,6 +2,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 
+from social_media.models import Post
+
 from . import forms
 
 # Create your views here.
@@ -10,6 +12,12 @@ from . import forms
 def home_page(request):
     content = {}
     return render(request, "home.html", content)
+
+
+def post_list(request):
+    posts = Post.objects.all()
+    context = {"posts": posts}
+    return render(request, "social/post_list.html", context)
 
 
 def ticket(request):

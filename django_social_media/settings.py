@@ -33,19 +33,26 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+THIRD_PARTY_APPS = [
+    "django_cleanup.apps.CleanupConfig",
+    "taggit",
+]
+LOCAL_APPS = [
+    "accounts.apps.AccountsConfig",
+    "social_media.apps.SocialMediaConfig",
+]
 
 # Application definition
 
 INSTALLED_APPS = [
-    "accounts.apps.AccountsConfig",
-    "social_media.apps.SocialMediaConfig",
+    *LOCAL_APPS,
+    *THIRD_PARTY_APPS,
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_cleanup.apps.CleanupConfig",
 ]
 
 MIDDLEWARE = [
