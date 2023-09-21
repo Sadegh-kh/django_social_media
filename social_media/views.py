@@ -14,10 +14,32 @@ def home_page(request):
     return render(request, "home.html", content)
 
 
-def post_list(request):
+def post_list(request, slug_tag=None):
     posts = Post.objects.all()
-    context = {"posts": posts}
+    if slug_tag != None:
+        # set for we don't want dublicate post
+        posts = set(Post.objects.filter(tags__slug__icontains=slug_tag))
+
+    context = {
+        "tag": slug_tag,
+        "posts": posts,
+    }
     return render(request, "social/post_list.html", context)
+
+
+def create_post(request):
+    if request.method == "POST":
+        form = forms.PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            form.save_m2m()
+            return redirect("social:post_list")
+    else:
+        form = forms.PostForm()
+    context = {"form": form}
+    return render(request, "social/forms/create_post.html", context)
 
 
 def ticket(request):

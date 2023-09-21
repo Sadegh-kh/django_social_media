@@ -28,7 +28,7 @@ class Post(models.Model):
         indexes = [models.Index(fields=["-created"])]
 
     def __str__(self):
-        return self.author.first_name
+        return self.author.username
 
     def get_absolute_url(self):
         return reverse("soctial:post_item", args=[self.id])
