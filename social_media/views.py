@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.mail import send_mail
+from django.db.models import Count
 from django.shortcuts import redirect, render
 
 from social_media.models import Post
@@ -29,7 +30,17 @@ def post_list(request, slug_tag=None):
 
 def post_detail(request, pk):
     post = Post.objects.get(id=pk)
-    context = {"post": post}
+    tags_id = post.tags.values_list("id", flat=True)
+    similar_posts = Post.objects.filter(tags__in=tags_id)
+    similar_posts = (
+        similar_posts.annotate(count_same_tag=Count("tags"))
+        .order_by("-count_same_tag", "-created")
+        .exclude(id=pk)
+    )
+    context = {
+        "post": post,
+        "similar_posts": similar_posts,
+    }
     return render(request, "social/post_detail.html", context)
 
 
