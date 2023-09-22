@@ -10,7 +10,7 @@ Post List
 {% endif %}
 {% for post in posts %}
 <div>
-    <p>{{post.description|truncatewords:20|capfirst}}</p>
+    <p><a href="{{post.get_absolute_url}}">{{post.description|truncatewords:20|capfirst}}</a></p>
     <p>Created at {{post.created}} by {{post.author.username}}</p>
     {% for tag in post.tags.all %}
         <span><a href='{% url "social:post_list_by_tag" tag %}'>#{{tag}}</a>&nbsp&nbsp</span>

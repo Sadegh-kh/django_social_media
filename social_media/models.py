@@ -31,7 +31,7 @@ class Post(models.Model):
         return self.author.username
 
     def get_absolute_url(self):
-        return reverse("soctial:post_item", args=[self.id])
+        return reverse("social:post_detail", args=[self.id])
 
     def delete(self, *args, **kwargs):
         images = self.images.all()

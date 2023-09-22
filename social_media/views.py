@@ -27,6 +27,12 @@ def post_list(request, slug_tag=None):
     return render(request, "social/post_list.html", context)
 
 
+def post_detail(request, pk):
+    post = Post.objects.get(id=pk)
+    context = {"post": post}
+    return render(request, "social/post_detail.html", context)
+
+
 def create_post(request):
     if request.method == "POST":
         form = forms.PostForm(request.POST)

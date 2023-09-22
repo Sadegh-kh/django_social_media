@@ -1,0 +1,17 @@
+{% extends "parent/base.html" %}
+
+{% block title %}
+Post Detail
+{% endblock title %}
+
+{% block content %}
+<div>
+    <p>{{post.description}}</p>
+    <p>Created at {{post.created}} by {{post.author}}</p>
+    {% for tag in post.tags.all %}
+        <span><a href='{% url "social:post_list_by_tag" tag %}'>#{{tag}}</a>&nbsp&nbsp</span>
+    {% endfor %}
+</div>
+
+{% endblock content %}
+

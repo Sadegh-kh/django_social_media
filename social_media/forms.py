@@ -18,5 +18,5 @@ class PostForm(forms.ModelForm):
         tags = self.cleaned_data["tags"]
         for tag in tags:
             if " " in tag:
-                raise forms.ValidationError("tags must have'n space ")
+                raise forms.ValidationError("tags must not contain space ")
         return tags
