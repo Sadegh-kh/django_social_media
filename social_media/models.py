@@ -14,6 +14,7 @@ class Post(models.Model):
         on_delete=models.CASCADE,
         related_name="user_posted",
     )
+    likes = models.ManyToManyField(get_user_model(), related_name="post_liked")
     # data fields
     description = models.TextField()
 

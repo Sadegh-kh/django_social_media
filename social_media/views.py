@@ -2,7 +2,10 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.db.models import Count
 from django.shortcuts import redirect, render
-
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404
+from django.http.response import JsonResponse
 from social_media.models import Post
 
 from . import forms
@@ -17,7 +20,7 @@ def home_page(request):
 
 def post_list(request, slug_tag=None):
     posts = Post.objects.all()
-    if slug_tag != None:
+    if slug_tag is not None:
         # set for we don't want dublicate post
         posts = set(Post.objects.filter(tags__slug__icontains=slug_tag))
 
@@ -77,3 +80,23 @@ def ticket(request):
         form = forms.TicketForm()
     context = {"form": form}
     return render(request, "social/forms/ticket.html", context)
+
+
+# AJAX view
+
+
+@login_required
+@require_POST
+def post_like(request):
+    post_id = request.POST.get("post_id", None)
+    if post_id is not None:
+        post = get_object_or_404(Post, id=post_id)
+        if request.user in post.likes.all():
+            post.likes.remove(request.user)
+            liked = False
+        else:
+            post.likes.add(request.user)
+            liked = True
+        return JsonResponse({"liked": liked, "like_count": post.likes.count()})
+    else:
+        return JsonResponse({"error": "post id not found"})
