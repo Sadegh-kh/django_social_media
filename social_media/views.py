@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from django.http.response import JsonResponse
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from social_media.models import Post
 
 from . import forms
@@ -23,7 +24,19 @@ def post_list(request, slug_tag=None):
     if slug_tag is not None:
         # set for we don't want dublicate post
         posts = set(Post.objects.filter(tags__slug__icontains=slug_tag))
+        # list for paginator
+        posts = list(posts)
+    paginator = Paginator(posts, 2)
+    page = request.GET.get("page")
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = []
 
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        return render(request, "social/post_ajax_list.html", {"posts": posts})
     context = {
         "tag": slug_tag,
         "posts": posts,

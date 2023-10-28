@@ -43,7 +43,7 @@ Post Detail
                 data: {'post_id': post_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
                 success: function(data) {
                     if (data.liked){
-                        button.text('UnLike');
+                        button.text('Unlike');
                     } else {
                         button.text('Like');
                     }
